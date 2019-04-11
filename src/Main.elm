@@ -26,7 +26,7 @@ update msg model =
 
 renderTasksItem : String -> Html Msg   
 renderTasksItem item = 
-    li 
+    div 
         []
         [ input 
             [ type_ "checkbox"]
