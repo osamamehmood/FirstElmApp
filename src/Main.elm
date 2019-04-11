@@ -1,7 +1,7 @@
 import Browser
 import Html exposing (..)
-import Html.Events exposing (onClick, onInput)
-import Html.Attributes exposing (style, type_, value)
+import Html.Events exposing (onClick, onInput, onCheck)
+import Html.Attributes exposing (style, type_, value, placeholder)
 
 
 
@@ -10,7 +10,7 @@ main =
     Browser.sandbox { init = { tasksList = [], taskBox = ""}, update = update, view = view }
 
 
-type Msg = AddTask String | UpdateTaskBox String
+type Msg = AddTask String | UpdateTaskBox String | ToggleTask Bool
 
 type alias Model = 
     { tasksList : List String
@@ -22,6 +22,7 @@ update msg model =
     case msg of 
         AddTask string->  { model | tasksList = string :: model.tasksList, taskBox = ""}
         UpdateTaskBox string -> { model | taskBox = string } 
+        ToggleTask completed -> model
 
 
 renderTasksItem : String -> Html Msg   
@@ -29,7 +30,9 @@ renderTasksItem item =
     div 
         []
         [ input 
-            [ type_ "checkbox"]
+            [ type_ "checkbox"
+            , onCheck ToggleTask
+            ]
             []
         , text item
         ]
@@ -43,6 +46,7 @@ view model =
             [ text "My Todo List" ]
         , input 
             [ type_ "text"
+            , placeholder "Add a task"
             , onInput UpdateTaskBox
             , value model.taskBox
             ]
